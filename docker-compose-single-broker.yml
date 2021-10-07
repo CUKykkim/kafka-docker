@@ -1,16 +1,33 @@
-version: '2'
+ersion: '2'
+
+networks:
+  test:
+
 services:
   zookeeper:
     image: wurstmeister/zookeeper
+    container_name: zookeeper
     ports:
       - "2181:2181"
+    networks:
+      - test
+    restart: always
+
   kafka:
-    build: .
-    ports:
-      - "9092:9092"
+    image: wurstmeister/kafka:2.13-2.6.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: 192.168.99.100
-      KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://172.28.144.1:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_HOST_NAME: 172.28.144.1
+      KAFKA_ADVERTISED_PORT: 9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "9092:9092"
+    networks:
+      - test
+    restart: always
