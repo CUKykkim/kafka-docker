@@ -57,7 +57,7 @@ bin/kafka-topics.sh --list --zookeeper zookeeper:2181
 
 - 생성된 topic에 관한 세부 정보를 확인한다.
 ```
-bin/kafka-topics.sh --describe --zookeeper kafka:2182 --topic cuk
+bin/kafka-topics.sh --describe --zookeeper zookeeper:2181 --topic cuk
 ```
 
 ### Producer-Consumer 수행하기
